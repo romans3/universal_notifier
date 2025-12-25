@@ -1,18 +1,18 @@
- /config/custom_components/universal_notifier/services.yaml
+# /config/custom_components/universal_notifier/services.yaml
 
 send:
   name: Send Universal Notification
-  description: Invia messaggi a target multipli con logica Smart Assistant (Saluti, Ora, Nome).
+  description: Invia messaggi a target multipli con logica Smart (Saluti, Ora, DND, Priorità).
   fields:
     message:
       name: Message
-      description: Il corpo del messaggio o del testo da pronunciare.
+      description: Il testo del messaggio o comando.
       required: true
       selector:
         text:
     title:
       name: Title
-      description: Titolo della notifica (usato da App, Mail, Pushover, Pushbullet).
+      description: Titolo della notifica.
       required: false
       selector:
         text:
@@ -23,33 +23,48 @@ send:
       selector:
         object:
     data:
-      name: Data
-      description: Dati extra (immagini, azioni, url) specifici per le piattaforme.
+      name: General Data
+      description: Dati extra generici applicati a tutti i target.
       required: false
       selector:
         object:
-    # --- CAMPI DI OVERRIDE ---
+    target_data:
+      name: Target Specific Data
+      description: Payload specifico per singolo target (es. clickAction per mobile).
+      required: false
+      selector:
+        object:
+
+    # --- OVERRIDES & FLAGS ---
+    priority:
+      name: Priority Message
+      description: Se attivo (true), bypassa il DND e imposta il volume al 90% per gli assistenti vocali.
+      required: false
+      default: false
+      selector:
+        boolean:
     assistant_name:
       name: Assistant Name Override
-      description: Sovrascrive il nome dell'assistente per questo messaggio (es. Hal9000).
+      description: Sovrascrive il nome dell'assistente.
       required: false
       selector:
         text:
+    skip_greeting:
+      name: Skip Greeting
+      description: Se attivo, non aggiunge il saluto.
+      required: false
+      selector:
+        boolean:
     include_time:
       name: Include Time
       description: Se disattivato, omette l'orario nel prefisso.
       required: false
       selector:
         boolean:
-    skip_greeting:
-      name: Skip Greeting
-      description: Se attivato, non aggiunge il saluto (Buongiorno/Buonasera).
-      required: false
-      selector:
-        boolean:
     override_greetings:
       name: Override Greetings
-      description: Dizionario per sovrascrivere i saluti predefiniti per questa chiamata.
+      description: Dizionario per sovrascrivere i saluti predefiniti.
       required: false
       selector:
         object:
+
