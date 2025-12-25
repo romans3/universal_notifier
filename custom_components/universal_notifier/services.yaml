@@ -1,0 +1,55 @@
+ /config/custom_components/universal_notifier/services.yaml
+
+send:
+  name: Send Universal Notification
+  description: Invia messaggi a target multipli con logica Smart Assistant (Saluti, Ora, Nome).
+  fields:
+    message:
+      name: Message
+      description: Il corpo del messaggio o del testo da pronunciare.
+      required: true
+      selector:
+        text:
+    title:
+      name: Title
+      description: Titolo della notifica (usato da App, Mail, Pushover, Pushbullet).
+      required: false
+      selector:
+        text:
+    targets:
+      name: Targets
+      description: Lista degli alias dei canali definiti nel configuration.yaml.
+      required: true
+      selector:
+        object:
+    data:
+      name: Data
+      description: Dati extra (immagini, azioni, url) specifici per le piattaforme.
+      required: false
+      selector:
+        object:
+    # --- CAMPI DI OVERRIDE ---
+    assistant_name:
+      name: Assistant Name Override
+      description: Sovrascrive il nome dell'assistente per questo messaggio (es. Hal9000).
+      required: false
+      selector:
+        text:
+    include_time:
+      name: Include Time
+      description: Se disattivato, omette l'orario nel prefisso.
+      required: false
+      selector:
+        boolean:
+    skip_greeting:
+      name: Skip Greeting
+      description: Se attivato, non aggiunge il saluto (Buongiorno/Buonasera).
+      required: false
+      selector:
+        boolean:
+    override_greetings:
+      name: Override Greetings
+      description: Dizionario per sovrascrivere i saluti predefiniti per questa chiamata.
+      required: false
+      selector:
+        object:
