@@ -1,7 +1,7 @@
 # 📢 Universal Notifier
 
 [![GitHub Release][releases-shield]][releases]
-[![License][license-shield]][license]
+[![License][license-shield]][license]<br>
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
 Un componente custom per Home Assistant progettato per unificare l'invio di notifiche su piattaforme multiple (Telegram, Alexa, Google TTS, Mobile App, etc.). Include una logica intelligente per personalizzare i messaggi con l'ora, un nome assistente (es. Hal9000) e saluti casuali (es. Buongiorno/Buonasera) che variano in base all'orario.
@@ -10,11 +10,9 @@ Il componente verifica automaticamente quali integrazioni sono caricate su Home 
 
 ## ✨ Caratteristiche Principali
 
-* **Piattaforma Agnostica:** Invia notifiche a servizi di messaggistica (`notify.*`), bot (`telegram_bot.*`), e servizi TTS (`tts.*`) tramite un'unica chiamata.
+* **Piattaforma Universale:** Invia notifiche a servizi di messaggistica (`notify.*`), bot (`telegram_bot.*`), e servizi TTS (`tts.*`) tramite un'unica chiamata.
 * **Intelligenza Vocale vs Testuale:** Distingue automaticamente tra canali testuali (Telegram, Mail) e vocali (Alexa, Google TTS) per formattare il messaggio in modo appropriato.
-    * **Testo:** Aggiunge il prefisso `[Nome Assistente - HH:MM:SS] Saluto.`
-    * **Voce:** Invia solo il testo naturale `Saluto. Messaggio.`
-* **Personalità Configurabile:** Nome assistente, formato orario e liste di saluti random sono configurabili in `configuration.yaml` e sovrascrivibili ad ogni chiamata.
+* **Personalità Configurabile:** Nome assistente, formato orario e liste di saluti  sono configurabili e sovrascrivibili ad ogni chiamata.
 * **Controllo dell'Orario:** Possibilità di disattivare l'inclusione dell'orario nel prefisso in modo globale o per singola chiamata.
 
 ## 🚀 Installazione (tramite HACS)
