@@ -1,20 +1,29 @@
 # /config/custom_components/universal_notifier/const.py
 
 DOMAIN = "universal_notifier"
-CONF_CHANNELS = "channels"
 
-# --- Chiavi di configurazione ---
+# --- Chiavi Configurazione --- 
+CONF_CHANNELS = "channels"
 CONF_ASSISTANT_NAME = "assistant_name"
 CONF_DATE_FORMAT = "date_format"
-CONF_GREETINGS = "greetings"
-CONF_IS_VOICE = "is_voice"
 CONF_INCLUDE_TIME = "include_time"
+CONF_GREETINGS = "greetings"
 CONF_TIME_SLOTS = "time_slots"
 CONF_DND = "dnd"
-
-# --- Chiavi Service Call ---
 CONF_OVERRIDE_GREETINGS = "override_greetings"
-CONF_PRIORITY = "priority"     # <--- NUOVO
+CONF_PRIORITY = "priority"
+
+# --- Chiavi di configurazione per TTS GOOGLE--- 
+CONF_SERVICE = "service"
+CONF_SERVICE_DATA = "service_data"
+CONF_TARGET = "target"
+CONF_ENTITY_ID = "entity_id"
+CONF_IS_VOICE = "is_voice"
+CONF_VOLUME_ENTITY = "volume_entity"
+
+# -- per gestione Telegram Photo and Video ---
+CONF_ALT_SERVICES = "alt_services"
+CONF_TYPE = "type"
 
 # --- Default Values ---
 DEFAULT_NAME = "Hal9000"
