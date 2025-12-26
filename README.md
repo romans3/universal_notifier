@@ -4,7 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/jumping2000/universal_notifier?style=for-the-badge) 
 ![GitHub Release Date](https://img.shields.io/github/release-date/jumping2000/universal_notifier?style=for-the-badge)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-brightgreen.svg)](https://https://github.com/jumping2000/universal_notifier/graphs/commit-activity?style=for-the-badge)
-[![GitHub issues](https://img.shields.io/github/issues/jumping2000/universal_notifier)](https://github.com/jumping2000/universal_notifier/issues?style=for-the-badge)
+[![GitHub issues](https://img.shields.io/github/issues/jumping2000/universal_notifier)](https://github.com/jumping2000/universal_notifier/issues?style=for-the-badge)<br>
 [![Buy me a coffee](https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg)](https://www.buymeacoffee.com/jumping)<span style="margin-left:15px;font-size:28px !important;">Buy me a coffee</span></a>
 
 ### [Support our work with a donation](https://paypal.me/hassiohelp)
@@ -149,3 +149,44 @@ universal_notifier:
     my_android:
       service: notify.mobile_app_samsungs21
 ```
+
+___
+
+## 📝 Usage Examples
+
+#### 1. Standard Notification (Automatic Volume)
+If sent at 3:00 PM, it will use the afternoon volume (0.60). If sent at 2:00 AM (DND is active), Alexa will be skipped, but Telegram will receive the message.
+
+```yaml
+service: universal_notifier.send
+data:
+  message: "The laundry is finished."
+  targets:
+    - alexa_living_room
+    - telegram_admin
+```
+
+#### 2. Priority Notification (Bypasses DND and sets Volume to 90%)
+Use the priority flag for critical alerts.
+
+```yaml
+service: universal_notifier.send
+data:
+  title: "CRITICAL ALERT"
+  message: "Water leak detected, valve closed!"
+  priority: true        # <--- FORCES SENDING AND MAX VOLUME (0.9)
+  skip_greeting: true   # <--- Avoids greetings like "Good night" during an alarm
+  targets:
+    - alexa_living_room
+    - my_android
+  
+  # Target-specific data to make the phone ring even in silent mode
+  target_data:
+    my_android:
+      push:
+        sound:
+          name: "default"
+          critical: 1
+          volume: 1.0
+```
+
