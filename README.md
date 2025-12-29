@@ -177,7 +177,7 @@ ___
 If sent at 3:00 PM, it will use the afternoon volume (0.60). If sent at 2:00 AM (DND is active), Alexa will be skipped, but Telegram will receive the message.
 
 ```yaml
-service: universal_notifier.send
+action: universal_notifier.send
 data:
   message: "The laundry is finished."
   targets:
@@ -189,7 +189,7 @@ data:
 Use the priority flag for critical alerts.
 
 ```yaml
-service: universal_notifier.send
+action: universal_notifier.send
 data:
   title: "CRITICAL ALERT"
   message: "Water leak detected, valve closed!"
@@ -212,7 +212,7 @@ data:
 If the message is a recognized command (like "TTS") or starts with *command_*, greetings and prefixes are automatically stripped.
 
 ```yaml
-service: universal_notifier.send
+action: universal_notifier.send
 data:
   message: "TTS" # The component sends "TTS" RAW, without prefixes.
   targets:
