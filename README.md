@@ -97,6 +97,11 @@ universal_notifier:
     # Example MOBILE APP
     my_android:
       service: notify.mobile_app_samsungs21
+
+    # Example PERSISTENT NOTIFICATION
+    ha_notification:
+      service: persistent_notification.create
+
 ```
 
 #### Complete Configuration and Time Slots
