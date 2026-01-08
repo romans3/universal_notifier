@@ -3,15 +3,6 @@
 send:
   name: Send Universal Notification
   description: Sends messages to multiple targets with Smart logic (Greetings, Time, DND, Priority).
-  example: # Esempi visualizzati nell'interfaccia utente di Home Assistant
-    message: "Motion detected in the entryway."
-    targets:
-      - my_phone
-      - telegram_admin
-    priority: false
-    data:
-      tag: "motion_alert"
-      ttl: 0
 
   fields:
     message:
