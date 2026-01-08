@@ -2,69 +2,112 @@
 
 send:
   name: Send Universal Notification
-  description: Invia messaggi a target multipli con logica Smart (Saluti, Ora, DND, Priorità).
+  description: Sends messages to multiple targets with Smart logic (Greetings, Time, DND, Priority).
+  example: # Esempi visualizzati nell'interfaccia utente di Home Assistant
+    message: "Motion detected in the entryway."
+    targets:
+      - my_phone
+      - telegram_admin
+    priority: false
+    data:
+      tag: "motion_alert"
+      ttl: 0
+
   fields:
     message:
       name: Message
-      description: Il testo del messaggio o comando.
+      description: The message text or command.
       required: true
       selector:
         text:
+      example: "The washing machine has finished its cycle."
+
     title:
       name: Title
-      description: Titolo della notifica.
+      description: Notification title.
       required: false
       selector:
         text:
+      example: "Laundry Alert"
+
     targets:
       name: Targets
-      description: Lista degli alias dei canali definiti nel configuration.yaml.
+      description: List of channel aliases defined in configuration.yaml.
       required: true
       selector:
         object:
+      example:
+        - gh_entryway
+        - mobile_app_user
+
     data:
       name: General Data
-      description: Dati extra generici applicati a tutti i target.
+      description: Generic extra data applied to all targets.
       required: false
       selector:
         object:
+      example:
+        # Esempio di dati per Mobile App/Alexa
+        data:
+          ttl: 0
+          tag: "alert"
+
     target_data:
       name: Target Specific Data
       description: >
-        Payload specifico per singolo target. 
-        Puoi usare la chiave 'message' qui per sovrascrivere il messaggio principale solo per questo target.
+        Specific payload for a single target. 
+        You can use the 'message' key here to override the main message only for this target.
       required: false
       selector:
         object:
+      example:
+        # Override per Telegram
+        telegram_admin:
+          message: "Intrusion detected! Check the live feed."
+          type: photo
+          url: "http://camera_ip/snapshot.jpg"
+
     # --- OVERRIDES & FLAGS ---
     priority:
       name: Priority Message
-      description: Se attivo (true), bypassa il DND e imposta il volume al 90% per gli assistenti vocali.
+      description: If active (true), bypasses DND and sets the volume to 90% for voice assistants.
       required: false
       default: false
       selector:
         boolean:
+
     assistant_name:
       name: Assistant Name Override
-      description: Sovrascrive il nome dell'assistente.
+      description: Overrides the assistant's name in visual prefixes (e.g., "[My Smart Home - 10:00]").
       required: false
       selector:
         text:
+
+    bold_prefix:
+      name: Bold Prefix
+      description: If active, the assistant name and time will be bolded in visual notifications (supports HTML/Markdown).
+      required: false
+      default: false
+      selector:
+        boolean:
+
     skip_greeting:
       name: Skip Greeting
-      description: Se attivo, non aggiunge il saluto.
+      description: If active, does not add the time-based greeting (e.g., Good Morning).
       required: false
       selector:
         boolean:
+
     include_time:
       name: Include Time
-      description: Se disattivato, omette l'orario nel prefisso.
+      description: If disabled, omits the time in the visual prefix.
       required: false
       selector:
         boolean:
+
     override_greetings:
       name: Override Greetings
-      description: Dizionario per sovrascrivere i saluti predefiniti.
+      description: Dictionary to override the default greetings for a specific time slot.
       required: false
       selector:
         object:
