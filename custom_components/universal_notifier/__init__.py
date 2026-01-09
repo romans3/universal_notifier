@@ -98,21 +98,6 @@ def apply_formatting(text: str, parse_mode: str, style: str = "bold") -> str:
         
     return text
 
-def apply_formatting(text: str, parse_mode: str, style: str = "bold") -> str:
-    """Applica la formattazione (grassetto) in base al parse_mode."""
-    if not text: return ""
-    mode = parse_mode.lower() if parse_mode else ""
-    
-    if "html" in mode:
-        if style == "bold": return f"<b>{text}</b>"
-    
-    elif "markdown" in mode:
-        # Telegram MarkdownV2 usa *bold*, Standard usa **bold**
-        # Usiamo *text* che è spesso compatibile con V2
-        return f"*{text}*" 
-        
-    return text
-
 # ==============================================================================
 # SCHEMAS
 # ==============================================================================
@@ -303,7 +288,40 @@ async def async_setup(hass: HomeAssistant, config: dict):
                     clean_prefix = f"[{prefix_content}] " 
 
                     greeting_part = f"{clean_greet}. " if clean_greet else ""
-                    final_msg = f"{clean_prefix}{greeting_part}{clean_msg}"
+                    # ============================
+                    # Prefisso + Titolo Inline
+                    # ============================
+
+                    title_inline = ""
+
+                    if title and specific_data.get("inject_title_inline"):
+                        # HTML
+                        if parse_mode and "html" in parse_mode.lower():
+                            title_inline = f" <b>{sanitize_text_visual(title, parse_mode)}</b>"
+                        # Markdown V1
+                        elif parse_mode and "markdown" in parse_mode.lower():
+                            title_inline = f" *{sanitize_text_visual(title, parse_mode)}*"
+                        # Nessun parse_mode
+                        else:
+                            title_inline = f" {title}"
+
+                    # Linea 1: prefisso + titolo
+                    line1 = f"{clean_prefix}{title_inline}"
+
+                    # ============================
+                    # Newline dopo prefisso+titolo
+                    # ============================
+
+                    if parse_mode and "html" in parse_mode.lower():
+                        newline = "<br>"
+                    else:
+                        newline = "\n"
+
+                    # ============================
+                    # Messaggio finale
+                    # ============================
+
+                    final_msg = f"{line1}{newline}{clean_msg}"
 
             # E. Gestione Volume (Solo Canali Voice) e DND
             if is_voice_channel:
@@ -337,7 +355,8 @@ async def async_setup(hass: HomeAssistant, config: dict):
 
             # Inseriamo il messaggio finale
             final_payload[CONF_MESSAGE] = final_msg
-            if title:
+            # Non inviare il titolo ai canali che lo rifiutano (es. Telegram)
+            if title and not specific_data.get("drop_title"):
                 final_payload[CONF_TITLE] = title
 
             # F2. Rimozione entity_id per servizi notify.alexa_media (schema non lo accetta)
@@ -347,7 +366,6 @@ async def async_setup(hass: HomeAssistant, config: dict):
             # G. Gestione Entity ID del Provider (Fix CONF_TARGET)
             # Se la configurazione del canale ha 'target' (es. tts.google),
             # lo iniettiamo nel payload come 'entity_id' (o come richiesto dal servizio).
-            # H. Gestione Entity ID del Provider (Fix CONF_TARGET)
             # NON aggiungere entity_id ai servizi notify.* (Alexa, Mobile App, Telegram)
             if CONF_TARGET in channel_conf and not full_service_name.startswith("notify."):
                 final_payload[CONF_ENTITY_ID] = channel_conf[CONF_TARGET]
