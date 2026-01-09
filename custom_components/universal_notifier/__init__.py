@@ -241,6 +241,79 @@ async def async_setup(hass: HomeAssistant, config: dict):
                 base_service_payload = channel_conf.get(CONF_SERVICE_DATA, {}) or {}
                 is_voice_channel = channel_conf[CONF_IS_VOICE]
 
+            # FIX TELEGRAM PHOTO / VIDEO / DOCUMENT
+            if "telegram_bot.send_photo" in full_service_name:
+                # Telegram photo usa "photo" o "url" e "caption"
+                photo_url = specific_data.pop("photo", None)
+                if photo_url:
+                    base_service_payload["url"] = photo_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                base_service_payload["caption"] = caption
+
+                # Rimuovi "message" perché send_photo non lo accetta
+                target_raw_message = None
+
+            # FIX TELEGRAM VIDEO
+            if "telegram_bot.send_video" in full_service_name:
+                video_url = specific_data.pop("video", None)
+                if video_url:
+                    base_service_payload["url"] = video_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                if caption:
+                    base_service_payload["caption"] = caption
+
+                target_raw_message = None  # send_video non accetta "message"
+
+            # FIX TELEGRAM DOCUMENT
+            if "telegram_bot.send_document" in full_service_name:
+                document_url = specific_data.pop("document", None)
+                if document_url:
+                    base_service_payload["url"] = document_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                if caption:
+                    base_service_payload["caption"] = caption
+
+                target_raw_message = None  # send_document non accetta "message"
+
+            # FIX TELEGRAM ANIMATION (GIF)
+            if "telegram_bot.send_animation" in full_service_name:
+                animation_url = specific_data.pop("animation", None)
+                if animation_url:
+                    base_service_payload["url"] = animation_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                if caption:
+                    base_service_payload["caption"] = caption
+
+                target_raw_message = None  # send_animation non accetta "message"
+
+            # FIX TELEGRAM AUDIO
+            if "telegram_bot.send_audio" in full_service_name:
+                audio_url = specific_data.pop("audio", None)
+                if audio_url:
+                    base_service_payload["url"] = audio_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                if caption:
+                    base_service_payload["caption"] = caption
+
+                target_raw_message = None  # send_audio non accetta "message"
+
+            # FIX TELEGRAM VOICE (nota: usa "voice", non "audio")
+            if "telegram_bot.send_voice" in full_service_name:
+                voice_url = specific_data.pop("voice", None)
+                if voice_url:
+                    base_service_payload["url"] = voice_url
+
+                caption = specific_data.pop("caption", target_raw_message)
+                if caption:
+                    base_service_payload["caption"] = caption
+
+                target_raw_message = None  # send_voice non accetta "message"
+
             # C. Check Comandi (per mobile app)
             is_command_message = False
             if target_raw_message in COMPANION_COMMANDS or str(target_raw_message).startswith("command_"):
