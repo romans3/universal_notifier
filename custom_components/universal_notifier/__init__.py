@@ -78,11 +78,24 @@ def clean_text_for_tts(text: str) -> str:
     return text.strip()
 
 def sanitize_text_visual(text: str, parse_mode: str = None) -> str:
-    """Pulisce o esegue l'escape del testo per visualizzazione (HTML/Markdown)."""
-    if not text: return ""
-    # Se il target usa HTML (es. Telegram), dobbiamo fare l'escape di < e >
+    if not text:
+        return ""
     if parse_mode and "html" in parse_mode.lower():
         text = text.replace("<", "&lt;").replace(">", "&gt;")
+    return text
+
+def apply_formatting(text: str, parse_mode: str, style: str = "bold") -> str:
+    if not text:
+        return ""
+    mode = parse_mode.lower() if parse_mode else ""
+    
+    if "html" in mode:
+        if style == "bold":
+            return f"<b>{text}</b>"
+    
+    elif "markdown" in mode:
+        return f"*{text}*"
+        
     return text
 
 def apply_formatting(text: str, parse_mode: str, style: str = "bold") -> str:
